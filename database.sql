@@ -2,32 +2,56 @@
  * my first mysql script - testscript.sql.
  * you need to run this script with an authorized user.
  */
-drop database if exists include;
+ drop database if exists trampolim;
 
-create database include
-    DEFAULT CHARACTER SET utf8;             -- creates working database
+ create database trampolim
+     DEFAULT CHARACTER SET utf8;             -- creates working database
 
-show databases;                             -- show server databases
-use include;                                -- set system database 'include' as the current database
-select database();                          -- shows current database
+ show databases;                             -- show server databases
+ use trampolim;                              -- set system database 'trampolim' as the current database
+ select database();                          -- shows current database
 
-create table members                        -- creates the members tables
-    (uniid int,
-    name varchar(200) not null ,
-    course varchar(50),
-    street varchar(200),
-    housenumber varchar(10),
-    neighborhood varchar(20),
-    city varchar(20),
-    state varchar(2),
-    cep varchar(9),
-    housephone varchar(14),
-    mobilephone varchar(14),
-    birth date,
-    email varchar(200) not null,
-    picture varchar(300) not null,
-    login varchar(200) not null,
-    password varchar(200) not null,
-    PRIMARY KEY (login));
+ create table admin(
+     username varchar(255) not null,
+     password varchar(255) not null,
+     PRIMARY KEY (username)
+ );
 
-describe members;                           -- shows table "members" structure
+ create table Validadores(
+     num_serie varchar(255) not null,
+     id_onibus int,
+     PRIMARY KEY (num_serie),
+     FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus)
+ );
+
+ create table Onibus(
+     id_onibus int not null ,
+     id_validador varchar(255) not null,
+     PRIMARY KEY (id_onibus),
+     FOREIGN KEY (id_validador) REFERENCES Validador(num_serie)
+ );
+
+ create table GRE(
+     id_gre int not null auto_increment,
+     data_envio date,
+     id_onibus int,
+     remessa int,
+     id_validador varchar(255),
+     PRIMARY KEY (id_gre),
+     FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus),
+     FOREIGN KEY (id_validador) REFERENCES Validador(num_serie)
+ );
+
+ create table Defeito(
+     tipo_defeito varchar(255) not null,
+     PRIMARY KEY (tipo_defeito)
+ );
+
+ create table Lista_defeitos(
+     id_gre int not null,
+     tipo_defeito varchar(255) not null,
+     relatorio varchar(255),
+     CONSTRAINT pk_listaID PRIMARY KEY (id_gre,tipo_defeito),
+     FOREIGN KEY (id_gre) REFERENCES GRE(id_gre),
+     FOREIGN KEY (tipo_defeito) REFERENCES Defeito(tipo_defeito)
+ );
