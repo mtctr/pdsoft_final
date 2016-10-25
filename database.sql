@@ -10,6 +10,7 @@
  show databases;                             -- show server databases
  use trampolim;                              -- set system database 'trampolim' as the current database
  select database();                          -- shows current database
+ set foreign_key_checks=0;
 
  create table admin(
      username varchar(255) not null,
@@ -28,7 +29,7 @@
      id_onibus int not null ,
      id_validador varchar(255) not null,
      PRIMARY KEY (id_onibus),
-     FOREIGN KEY (id_validador) REFERENCES Validador(num_serie)
+     FOREIGN KEY (id_validador) REFERENCES Validadores(num_serie)
  );
 
  create table GRE(
@@ -39,7 +40,7 @@
      id_validador varchar(255),
      PRIMARY KEY (id_gre),
      FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus),
-     FOREIGN KEY (id_validador) REFERENCES Validador(num_serie)
+     FOREIGN KEY (id_validador) REFERENCES Validadores(num_serie)
  );
 
  create table Defeito(
@@ -55,3 +56,11 @@
      FOREIGN KEY (id_gre) REFERENCES GRE(id_gre),
      FOREIGN KEY (tipo_defeito) REFERENCES Defeito(tipo_defeito)
  );
+
+show tables;
+describe admin;
+describe Validadores;
+describe Onibus;
+describe GRE;
+describe Defeito;
+describe Lista_defeitos;

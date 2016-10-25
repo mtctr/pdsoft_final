@@ -22,32 +22,49 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation" class="active"><a href="#">Home</a></li>
                     {% if current_user.is_authenticated%}
-                        <li role="presentation"><a href="/membersview">View Members</a></li>
                         <li role="presentation"><a href="/logout">Log Out</a></li>
                     {%else%}
-                        <li role="presentation"><a href="/signup">Sign Up</a>
-                        <li role="presentation"><a href="/login">Log In</a></li>
+                        <li role="presentation"><a href="#">Realizar Consultas</a>
+                        <li role="presentation"><a data-toggle="modal" data-target="#adminLogin" href="#">Admin Login</a></li>
                     {%endif%}
                 </ul>
             </nav>
             <h3 class="text-muted">Python Flask App</h3>
         </div>
 
-        {% if current_user.is_authenticated %}
-        <div class="jumbotron">
-            <h2>Bem Vindo, {{current_user.id}}</h2>
-            <p class="lead"></p>
-
-            <img src="{{url_for('static', filename='users/pictures/'+pic)}}"  style="witdth=250;height=300">
-        </div>
-        {%else%}
-        <div class="jumbotron">
-            <h2>Ainda não é membro? </h2>
-            <p class="lead"></p>
-            <a href="/signup">
-                <button type="button" class="btn btn-success btn-lg">Cadastrar</button>
-            </a>
-        </div>
+        <div class="modal fade" name="adminLogin" id="adminLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">>
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+              </div>
+              <form class="form-horizontal" action="" method="post">
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">User Login</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" name="lg_username" placeholder="Login">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-2 control-label">Password</label>
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" name="lg_password" placeholder="Password">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default" value="Login">Login</button>
+                      </div>
+                  </div>
+              </form>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         {%endif%}
 
         <div class="row marketing">
