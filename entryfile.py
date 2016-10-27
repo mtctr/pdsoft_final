@@ -20,7 +20,7 @@ app.config.update(
 app.config['MYSQL_HOST'] = 'mysql'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'password'
-app.config['MYSQL_DB'] = 'include'
+app.config['MYSQL_DB'] = 'trampolim'
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 mysql = MySQL(app)
 
@@ -45,15 +45,29 @@ def hello():
     else:
         return render_template("home.html")
 
+@app.route("/", methods=["GET", "POST"])
+def cadastroGRE():
+    cur = mysql.connection.cursor()
 
-@app.route('/', methods=["GET", "POST"])
+    if request.method =="POST":
+        data_envio = request.form["cd_date"]
+        id_onibus = request.form["cd_onibus"]
+        remessa = request.form["cd_remessa"]
+        id_validador = request.form["cd_validador"]
+
+        cur.execute("INSERT INTO GRE (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
+
+
+
+
+@app.route("/", methods=["GET", "POST"])
 def login():
     login = 0  # 0 - login / 1 - login com sucesso/ 2 - login invalido/ 3 - senha invalida
     cur = mysql.connection.cursor()
     if request.method == "POST":
         username = request.form["lg_username"]
         password = request.form["lg_password"]
-        cur.execute("SELECT login, password, picture FROM members WHERE login = '{}';".format(username))
+        cur.execute("SELECT username, password FROM admin WHERE login = '{}';".format(username))
         tup = cur.fetchone()
 
         if not tup:
@@ -73,7 +87,7 @@ def login():
 def load_user(user_id):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT login, password, picture FROM members WHERE login = '{}';".format(user_id))
+        cur.execute("SELECT username, password FROM admin WHERE login = '{}';".format(username))
         tup = cur.fetchone()
         return User(tup[0], tup[1], tup[2])
     except mysql.connection.IntegrityError:

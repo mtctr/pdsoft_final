@@ -7,8 +7,7 @@
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="icon" type="image/jpg" sizes="128x128" href="https://mir-s3-cdn-cf.behance.net/projects/404/8dbef733589885.Y3JvcCw4NDIsNjU3LDAsMTc.jpg" width="20%" height="20%" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">    
     <!-- Scripts padrão -->
     <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
@@ -52,15 +51,10 @@
                         <input type="password" class="form-control" name="lg_password" placeholder="Password">
                       </div>
                   </div>
-                  <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default" value="Login">Login</button>
-                      </div>
-                  </div>
               </form>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" value="Login">Login</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
