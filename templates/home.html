@@ -19,12 +19,53 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation" class="active"><a href="/">Home</a></li>
                     {% if current_user.is_authenticated%}
-                        <li role="presentation"><a href="#">Cadastro GRE</a></li>                       
-                        <li role="presentation"><a href="/logout">Log Out</a></li>
+                    <!--Dropdown-->
+                        <li>
+                          <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Cadastrar Itens
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li><a href="/cadastroGRE">GRE</a></li>
+                              <li><a href="/cadastroOnibus">Ônibus</a></li>
+                              <li><a href="/cadastroValidador">Validadores</a></li>
+                              <li><a href="#">Defeito</a></li>
+                            </ul>
+                          </div>
+                        </li>
+                      <!--Dropdown-->
+                        <li>
+                          <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Consultas
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li><a href="#">GRE</a></li>
+                              <li><a href="#">Ônibus</a></li>
+                              <li><a href="#">Validadores</a></li>
+                            </ul>
+                          </div>
+                        </li>
+                      <li role="presentation"><a href="/logout">Log Out</a></li>
                     {%else%}
-                        <li role="presentation"><a href="#">Realizar Consultas</a>
+                    <!--Dropdown-->
+                        <li>
+                          <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Consultas
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                              <li><a href="#">GRE</a></li>
+                              <li><a href="#">Ônibus</a></li>
+                              <li><a href="#">Validadores</a></li>
+                            </ul>
+                          </div>
+                        </li>
                         <li role="presentation"><a data-toggle="modal" data-target="#adminLogin" href="#">Admin Login</a></li>
                     {%endif%}
                 </ul>

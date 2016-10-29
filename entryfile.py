@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, session
+from flask import Flask, flash, render_template, request, session
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from flask_mysqldb import MySQL
 from datetime import date
@@ -36,6 +36,56 @@ def hello():
         return render_template("home.html")
     else:
         return render_template("home.html")
+
+@app.route("/cadastroGRE", methods=["GET", "POST"])
+def cadastroGRE():
+    cur = mysql.connection.cursor()
+
+    if request.method =="POST":
+        data_envio = request.form["cd_date"]
+        id_onibus = request.form["cd_onibus"]
+        remessa = request.form["cd_remessa"]
+        id_validador = request.form["cd_validador"]
+
+        cur.execute("INSERT INTO GRE (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
+        flash("Cadastro realizado com sucesso!")
+
+
+    return render_template("cadastroGRE.html")
+
+@app.route("/cadastroOnibus", methods=["GET", "POST"])
+def cadastroOnibus():
+    cur = mysql.connection.cursor()
+
+    if request.method =="POST":
+        id_onibus = request.form["cd_onibus"]
+        id_validador = request.form["cd_validador"]
+
+        cur.execute("INSERT INTO Onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
+        flash("Cadastro realizado com sucesso!")
+
+
+    return render_template("cadastroOnibus.html")
+
+@app.route("/cadastroValidador", methods=["GET", "POST"])
+def cadastroValidador():
+    cur = mysql.connection.cursor()
+
+    if request.method =="POST":
+        id_onibus = request.form["cd_onibus"]
+        id_validador = request.form["cd_validador"]
+
+        if id_onibus != "":
+            cur.execute("INSERT INTO Validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
+            flash("Cadastro realizado com sucesso!")
+        else:
+            cur.execute("INSERT INTO Validadores(num_serie) VALUES ('{}');".format(id_validador))
+            flash("Cadastro realizado com sucesso!")
+
+
+
+    return render_template("cadastroValidador.html")
+
 
 
 @app.route("/login", methods=["GET", "POST"])
