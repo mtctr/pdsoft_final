@@ -24,50 +24,28 @@ app.config['MYSQL_DB'] = 'trampolim'
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 mysql = MySQL(app)
 
-# Upload configuration variables
-app.config['PICTURES_FOLDER'] = 'static/users/pictures'
-app.config['ALLOWED_EXTENSIONS'] = set(['png', 'jpg'])
-
 # flask-login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
-
 
 @app.route("/", methods=["GET", "POST"])
 def hello():
     if not current_user.is_anonymous:
-        return render_template("home.html", pic=current_user.picture)
+        return render_template("home.html")
     else:
         return render_template("home.html")
 
-@app.route("/", methods=["GET", "POST"])
-def cadastroGRE():
-    cur = mysql.connection.cursor()
 
-    if request.method =="POST":
-        data_envio = request.form["cd_date"]
-        id_onibus = request.form["cd_onibus"]
-        remessa = request.form["cd_remessa"]
-        id_validador = request.form["cd_validador"]
-
-        cur.execute("INSERT INTO GRE (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
-
-
-
-
-@app.route("/", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     login = 0  # 0 - login / 1 - login com sucesso/ 2 - login invalido/ 3 - senha invalida
     cur = mysql.connection.cursor()
     if request.method == "POST":
-        username = request.form["lg_username"]
-        password = request.form["lg_password"]
-        cur.execute("SELECT username, password FROM admin WHERE login = '{}';".format(username))
+        username = request.form["username"]
+        password = request.form["password"]
+        cur.execute("SELECT username, password FROM admin WHERE username = '{}';".format(username))
         tup = cur.fetchone()
 
         if not tup:
@@ -77,19 +55,20 @@ def login():
                 login = 3
             else:
                 login = 1
-                user = User(tup[0],tup[1],tup[2])
+                user = User(tup[0],tup[1])
                 login_user(user)
-                return render_template("home.html", pic = current_user.picture)
+                return render_template("home.html")
 
     return render_template("home.html")
 
 @login_manager.user_loader
 def load_user(user_id):
+    username = user_id
     try:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT username, password FROM admin WHERE login = '{}';".format(username))
+        cur.execute("SELECT username, password FROM admin WHERE username = '{}';".format(username))
         tup = cur.fetchone()
-        return User(tup[0], tup[1], tup[2])
+        return User(tup[0], tup[1])
     except mysql.connection.IntegrityError:
         return None
 

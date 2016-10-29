@@ -1,7 +1,3 @@
-/*
- * my first mysql script - testscript.sql.
- * you need to run this script with an authorized user.
- */
  drop database if exists trampolim;
 
  create database trampolim
@@ -34,10 +30,10 @@
 
  create table GRE(
      id_gre int not null auto_increment,
-     data_envio date,
-     id_onibus int,
-     remessa int,
-     id_validador varchar(255),
+     data_envio date not null,
+     id_onibus int not null,
+     remessa int not null,
+     id_validador varchar(255) not null,
      PRIMARY KEY (id_gre),
      FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus),
      FOREIGN KEY (id_validador) REFERENCES Validadores(num_serie)
