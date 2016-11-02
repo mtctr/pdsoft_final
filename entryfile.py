@@ -40,53 +40,100 @@ def hello():
 @app.route("/cadastroGRE", methods=["GET", "POST"])
 def cadastroGRE():
     cur = mysql.connection.cursor()
-
+    cadastro = 0
     if request.method =="POST":
         data_envio = request.form["cd_date"]
         id_onibus = request.form["cd_onibus"]
         remessa = request.form["cd_remessa"]
         id_validador = request.form["cd_validador"]
 
-        cur.execute("INSERT INTO GRE (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
-        flash("Cadastro realizado com sucesso!")
+        cur.execute("INSERT INTO gre (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
+        mysql.connection.commit()
+        cadastro = 1
 
-
-    return render_template("cadastroGRE.html")
+    return render_template("cadastroGRE.html", cadastro = cadastro)
 
 @app.route("/cadastroOnibus", methods=["GET", "POST"])
 def cadastroOnibus():
     cur = mysql.connection.cursor()
-
+    cadastro = 0
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
 
-        cur.execute("INSERT INTO Onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
-        flash("Cadastro realizado com sucesso!")
+        cur.execute("INSERT INTO onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
+        cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus,id_validador))
 
+        mysql.connection.commit()
 
-    return render_template("cadastroOnibus.html")
+        cadastro = 1
+
+    return render_template("cadastroOnibus.html", cadastro=cadastro)
 
 @app.route("/cadastroValidador", methods=["GET", "POST"])
 def cadastroValidador():
     cur = mysql.connection.cursor()
-
+    cadastro = 0
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
 
         if id_onibus != "":
-            cur.execute("INSERT INTO Validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
-            flash("Cadastro realizado com sucesso!")
+            cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
         else:
-            cur.execute("INSERT INTO Validadores(num_serie) VALUES ('{}');".format(id_validador))
-            flash("Cadastro realizado com sucesso!")
+            cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
+            cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
 
+        mysql.connection.commit()
 
+        cadastro = 1
 
-    return render_template("cadastroValidador.html")
+    return render_template("cadastroValidador.html", cadastro = cadastro)
 
+@app.route('/busview')
+@login_required
+def dbBus():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM onibus")
+    row = cur.fetchall()
 
+    onibus = []
+    for r in row:
+        onibus.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+    print onibus
+    return render_template("busview.html", onibus=onibus)
+
+@app.route('/valview')
+@login_required
+def dbValidador():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM validadores")
+    row = cur.fetchall()
+
+    validadores = []
+    for r in row:
+        validadores.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+    print validadores
+    return render_template("valview.html", validadores=validadores)
+
+@app.route('/greview')
+@login_required
+def dbGRE():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM gre")
+    row = cur.fetchall()
+
+    gre = []
+    for r in row:
+        gre.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+    print gre
+    return render_template("greview.html", gre=gre)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Python Flask Bucket List App</title>
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <!-- Scripts padrão -->
+  <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/uploadFile.js')}}" async></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+          <li role="presentation" class="active"><a href="/">Home</a></li>
+          {% if current_user.is_authenticated%}
+          <!--Dropdown-->
+          <li>
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Cadastrar Itens
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="/cadastroGRE">GRE</a></li>
+                <li><a href="/cadastroOnibus">Ônibus</a></li>
+                <li><a href="/cadastroValidador">Validadores</a></li>
+                <li><a href="#">Defeito</a></li>
+              </ul>
+            </div>
+          </li>
+          <!--Dropdown-->
+          <li>
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Consultas
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="/greview">GRE</a></li>
+                <li><a href="/busview">Ônibus</a></li>
+                <li><a href="/valview">Validadores</a></li>
+              </ul>
+            </div>
+          </li>
+          <li role="presentation"><a href="/logout">Log Out</a></li>
+          {%else%}
+          <!--Dropdown-->
+          <li>
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Consultas
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="/greview">GRE</a></li>
+                <li><a href="/busview">Ônibus</a></li>
+                <li><a href="/valview">Validadores</a></li>
+              </ul>
+            </div>
+          </li>
+          <li role="presentation"><a data-toggle="modal" data-target="#adminLogin" href="#">Admin Login</a></li>
+          {%endif%}
+        </ul>
+      </nav>
+      <h3 class="text-muted">Python Flask App</h3>
+    </div>
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">GREs cadastradas</div>
+    <!-- Table -->
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Data de envio</th>
+        <th>ID Ônibus</th>
+        <th>Remessa</th>
+        <th>ID Validador</th>
+        {% for gre in gre %}
+          {% autoescape false %}
+          </tr>
+          <td>{{gre["id_gre"]}}</td>
+          <td>{{gre["data_envio"]}}</td>
+          <td>{{gre["id_onibus"]}}</td>
+          <td>{{gre["remessa"]}}</td>
+          <td>{{gre["id_validador"]}}</td>
+          </tr>
+          {% endautoescape %}
+        {%endfor%}
+      </table>
+    </div>
+
+<footer class="footer">
+  <p>&copy; Company 2015</p>
+</footer>
+
+</div>
+</body>
+
+</html>

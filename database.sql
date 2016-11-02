@@ -14,49 +14,49 @@
      PRIMARY KEY (username)
  );
 
- create table Validadores(
+ create table validadores(
      num_serie varchar(255) not null,
      id_onibus int,
      PRIMARY KEY (num_serie),
-     FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus)
+     FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus)
  );
 
- create table Onibus(
+ create table onibus(
      id_onibus int not null ,
      id_validador varchar(255) not null,
      PRIMARY KEY (id_onibus),
-     FOREIGN KEY (id_validador) REFERENCES Validadores(num_serie)
+     FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)
  );
 
- create table GRE(
+ create table gre(
      id_gre int not null auto_increment,
      data_envio date not null,
      id_onibus int not null,
      remessa int not null,
      id_validador varchar(255) not null,
      PRIMARY KEY (id_gre),
-     FOREIGN KEY (id_onibus) REFERENCES Onibus(id_onibus),
-     FOREIGN KEY (id_validador) REFERENCES Validadores(num_serie)
+     FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus),
+     FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)
  );
 
- create table Defeito(
+ create table defeito(
      tipo_defeito varchar(255) not null,
      PRIMARY KEY (tipo_defeito)
  );
 
- create table Lista_defeitos(
+ create table lista_defeitos(
      id_gre int not null,
      tipo_defeito varchar(255) not null,
      relatorio varchar(255),
      CONSTRAINT pk_listaID PRIMARY KEY (id_gre,tipo_defeito),
-     FOREIGN KEY (id_gre) REFERENCES GRE(id_gre),
-     FOREIGN KEY (tipo_defeito) REFERENCES Defeito(tipo_defeito)
+     FOREIGN KEY (id_gre) REFERENCES gre(id_gre),
+     FOREIGN KEY (tipo_defeito) REFERENCES defeito(tipo_defeito)
  );
 
 show tables;
 describe admin;
-describe Validadores;
-describe Onibus;
-describe GRE;
-describe Defeito;
-describe Lista_defeitos;
+describe validadores;
+describe onibus;
+describe gre;
+describe defeito;
+describe lista_defeitos;
