@@ -42,13 +42,27 @@ def cadastroGRE():
 
     cur = mysql.connection.cursor()
     cadastro = 0
+    cur.execute("SELECT * FROM defeito")
+    row = cur.fetchall()
+
+    defeitos = []
+    for r in row:
+        defeitos.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
     if request.method =="POST":
         data_envio = request.form["cd_date"]
         id_onibus = request.form["cd_onibus"]
         remessa = request.form["cd_remessa"]
         id_validador = request.form["cd_validador"]
+        tipo_defeito = request.form["defeito"]
         try:
             cur.execute("INSERT INTO gre (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
+            cur.execute("SELECT id_gre FROM gre WHERE remessa = '{}';".format(remessa))
+            tup = cur.fetchone()
+            id_gre = tup[0]
+            print tipo_defeito
+            cur.execute("INSERT INTO lista_defeitos(id_gre, tipo_defeito) VALUES ('{}', '{}');".format(id_gre, tipo_defeito))
             mysql.connection.commit()
             cadastro = 1
         except mysql.connection.IntegrityError:
@@ -57,12 +71,13 @@ def cadastroGRE():
             cur.close()
 
 
-    return render_template("cadastroGRE.html", cadastro = cadastro)
+    return render_template("cadastroGRE.html", defeitos = defeitos, cadastro = cadastro)
 
 @app.route("/cadastroOnibus", methods=["GET", "POST"])
 def cadastroOnibus():
     cur = mysql.connection.cursor()
     cadastro = 0
+
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
@@ -141,15 +156,22 @@ def dbValidador():
 def dbGRE():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM gre")
-    row = cur.fetchall()
+    row1 = cur.fetchall()
+
+    cur.execute("SELECT * FROM lista_defeitos")
+    row2 = cur.fetchall()
 
     gre = []
-    for r in row:
+    for r in row1:
         gre.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
-
+    defeitos = []
+    for r in row2:
+        defeitos.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
     print gre
-    return render_template("greview.html", gre=gre)
+    print defeitos
+    return render_template("greview.html", gre=gre, defeitos = defeitos)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
