@@ -1,66 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "default.html" %}
 
-<head>
-    <title>Python Flask Bucket List App</title>
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+{% block title %}
+    Cadastro de GRE
+{% endblock %}
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <!-- Scripts padrão -->
-    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
-    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/uploadFile.js')}}" async></script>
-</head>
-
-<body>
-    <div class="container">
-        <div class="header">
-          <div class="container">
-              <div class="header">
-                  <nav>
-                      <ul class="nav nav-pills pull-right">
-                          <li role="presentation" class="active"><a href="/">Home</a></li>
-                          {% if current_user.is_authenticated%}
-                          <!--Dropdown-->
-                              <li>
-                                <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Cadastrar Itens
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="/cadastroGRE">GRE</a></li>
-                                    <li><a href="/cadastroOnibus">Ônibus</a></li>
-                                    <li><a href="/cadastroValidador">Validadores</a></li>
-                                    <li><a href="#">Defeito</a></li>
-                                  </ul>
-                                </div>
-                              </li>
-                            <!--Dropdown-->
-                              <li>
-                                <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Consultas
-                                    <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="/greview">GRE</a></li>
-                                    <li><a href="/busview">Ônibus</a></li>
-                                    <li><a href="/valview">Validadores</a></li>
-                                  </ul>
-                                </div>
-                              </li>
-                              <li role="presentation"><a href="/logout">Log Out</a></li>
-                          {%else%}
-                              <li role="presentation"><a href="#">Realizar Consultas</a>
-                              <li role="presentation"><a data-toggle="modal" data-target="#adminLogin" href="#">Admin Login</a></li>
-                          {%endif%}
-                      </ul>
-                  </nav>
-                  <h3 class="text-muted">Python Flask App</h3>
-              </div>
+{% block content %}
 
         {% if cadastro == 1 %}
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -97,7 +41,5 @@
                 </div>
             </div>
         </form>
-    </div>
-</body>
 
-</html>
+{% endblock %}
