@@ -35,14 +35,14 @@
                   <input type="text" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_remessa" id="cd_remessa" placeholder="0000">
                   <label for="cd_validador">Serial do Validador</label>
                   <input type="text" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_validador" id="cd_validador" placeholder="a1b2c3">
-                  <div class = "row">
+                  <label for="defeito">Defeito:</label>
+                  <div class = "row">                
                   {% for defeito in defeitos %}
                     {% autoescape false %}
                     <div class="col-lg-6">
                       <div class="input-group">
                         <span class="input-group-addon">
-                          <label for="defeito">Defeito:</label>
-                          <input type="radio" name="defeito" id="defeito" value="{{defeito["tipo_defeito"]}}">{{defeito["tipo_defeito"]}} 
+                          <input type="radio" name="defeito" id="defeito" value="{{defeito["tipo_defeito"]}}">{{defeito["tipo_defeito"]}}
                         </span>
                       </div><!-- /input-group -->
                     </div><!-- /.col-lg-6 -->

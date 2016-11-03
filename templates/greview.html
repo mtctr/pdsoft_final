@@ -31,11 +31,13 @@
       </table>
       <table class="table">
         <tr>
+          <th>ID GRE </th>
           <th>Tipo de Defeito</th>
           <th>Relatório</th>
-          {% for defeito in lista_defeitos %}
+          {% for defeito in defeitos %}
             {% autoescape false %}
             </tr>
+            <td>{{defeito["id_gre"]}}</td>
             <td>{{defeito["tipo_defeito"]}}</td>
             <td>{{defeito["relatorio"]}}</td>
             </tr>

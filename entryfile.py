@@ -158,19 +158,18 @@ def dbGRE():
     cur.execute("SELECT * FROM gre")
     row1 = cur.fetchall()
 
-    cur.execute("SELECT * FROM lista_defeitos")
-    row2 = cur.fetchall()
-
     gre = []
     for r in row1:
         gre.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+    cur.execute("SELECT * FROM lista_defeitos")
+    row2 = cur.fetchall()
     defeitos = []
     for r in row2:
         defeitos.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
-    print gre
-    print defeitos
+
     return render_template("greview.html", gre=gre, defeitos = defeitos)
 
 @app.route("/login", methods=["GET", "POST"])
