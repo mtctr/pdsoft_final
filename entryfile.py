@@ -91,7 +91,6 @@ def cadastroValidador():
     return render_template("cadastroValidador.html", cadastro = cadastro)
 
 @app.route('/busview')
-@login_required
 def dbBus():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM onibus")
@@ -106,7 +105,6 @@ def dbBus():
     return render_template("busview.html", onibus=onibus)
 
 @app.route('/valview')
-@login_required
 def dbValidador():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM validadores")
@@ -121,7 +119,6 @@ def dbValidador():
     return render_template("valview.html", validadores=validadores)
 
 @app.route('/greview')
-@login_required
 def dbGRE():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM gre")
