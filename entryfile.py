@@ -79,10 +79,19 @@ def cadastroValidador():
         id_validador = request.form["cd_validador"]
 
         if id_onibus != "":
-            cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
+            cur.execute("SELECT id_onibus FROM onibus WHERE id_onibus = '{}';".format(id_onibus))
+            tup = cur.fetchone()
+            #verifica se o onibus já está cadastrado, caso não estiver, será cadastrado
+            if not tup:
+                cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
+                cur.execute("INSERT INTO onibus VALUES ('{}','{}')".format(id_onibus, id_validador))
+                cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus, id_validador))
+            else:
+                cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
+                cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
         else:
             cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
-            cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
+
 
         mysql.connection.commit()
 

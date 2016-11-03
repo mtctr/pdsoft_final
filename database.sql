@@ -19,6 +19,8 @@
      id_onibus int,
      PRIMARY KEY (num_serie),
      FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus)
+     ON UPDATE CASCADE
+     ON DELETE CASCADE
  );
 
  create table onibus(
@@ -26,6 +28,8 @@
      id_validador varchar(255) not null,
      PRIMARY KEY (id_onibus),
      FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)
+     ON UPDATE CASCADE
+     ON DELETE CASCADE
  );
 
  create table gre(
@@ -35,8 +39,10 @@
      remessa int not null,
      id_validador varchar(255) not null,
      PRIMARY KEY (id_gre),
-     FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus),
+     FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus)
+     ON UPDATE CASCADE ON DELETE CASCADE,
      FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)
+     ON UPDATE CASCADE ON DELETE CASCADE
  );
 
  create table defeito(
