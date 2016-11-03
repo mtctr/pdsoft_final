@@ -39,6 +39,7 @@ def hello():
 
 @app.route("/cadastroGRE", methods=["GET", "POST"])
 def cadastroGRE():
+
     cur = mysql.connection.cursor()
     cadastro = 0
     if request.method =="POST":
@@ -46,10 +47,15 @@ def cadastroGRE():
         id_onibus = request.form["cd_onibus"]
         remessa = request.form["cd_remessa"]
         id_validador = request.form["cd_validador"]
+        try:
+            cur.execute("INSERT INTO gre (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
+            mysql.connection.commit()
+            cadastro = 1
+        except mysql.connection.IntegrityError:
+            cadastro = 3
+        finally:
+            cur.close()
 
-        cur.execute("INSERT INTO gre (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
-        mysql.connection.commit()
-        cadastro = 1
 
     return render_template("cadastroGRE.html", cadastro = cadastro)
 
@@ -60,13 +66,15 @@ def cadastroOnibus():
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
-
-        cur.execute("INSERT INTO onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
-        cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus,id_validador))
-
-        mysql.connection.commit()
-
-        cadastro = 1
+        try:
+            cur.execute("INSERT INTO onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
+            cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus,id_validador))
+            mysql.connection.commit()
+            cadastro = 1
+        except mysql.connection.IntegrityError:
+            cadastro = 3
+        finally:
+            cur.close()
 
     return render_template("cadastroOnibus.html", cadastro=cadastro)
 
@@ -77,25 +85,27 @@ def cadastroValidador():
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
-
-        if id_onibus != "":
-            cur.execute("SELECT id_onibus FROM onibus WHERE id_onibus = '{}';".format(id_onibus))
-            tup = cur.fetchone()
-            #verifica se o onibus já está cadastrado, caso não estiver, será cadastrado
-            if not tup:
-                cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
-                cur.execute("INSERT INTO onibus VALUES ('{}','{}')".format(id_onibus, id_validador))
-                cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus, id_validador))
+        try:
+            if id_onibus != "":
+                cur.execute("SELECT id_onibus FROM onibus WHERE id_onibus = '{}';".format(id_onibus))
+                tup = cur.fetchone()
+                #verifica se o onibus já está cadastrado, caso não estiver, será cadastrado
+                if not tup:
+                    cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
+                    cur.execute("INSERT INTO onibus VALUES ('{}','{}')".format(id_onibus, id_validador))
+                    cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus, id_validador))
+                else:
+                    cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
+                    cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
             else:
-                cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
-                cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
-        else:
-            cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
+                cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
 
-
-        mysql.connection.commit()
-
-        cadastro = 1
+            mysql.connection.commit()
+            cadastro = 1
+        except mysql.connection.IntegrityError:
+            cadastro = 3
+        finally:
+            cur.close()
 
     return render_template("cadastroValidador.html", cadastro = cadastro)
 
