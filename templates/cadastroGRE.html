@@ -29,24 +29,34 @@
                   <label>Cadastro de GRE:</label><br><br>
                   <label for="cd_date">Data de envio</label>
                   <input type="date" class="form-control" style="margin-bottom:10px;" name="cd_date" id="cd_date" placeholder="AAAA/MM/DD">
+
                   <label for="cd_onibus">Ônibus</label>
-                  <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_onibus" id="cd_onibus" placeholder="012345">
-                  <label for="cd_remessa">Remessa</label>
+                  <select class="selectpicker form-control" data-live-search="true" data-size="5" name="cd_onibus">
+                      {% for o in onibus %}
+                          <option>{{o["id_onibus"]}}</option>
+                      {% endfor %}
+                  </select>
+
+                  <label for="cd_remessa" style="margin-top: 10px;">Remessa</label>
                   <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_remessa" id="cd_remessa" placeholder="0000">
+
                   <label for="cd_validador">Serial do Validador</label>
-                  <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_validador" id="cd_validador" placeholder="a1b2c3">
-                  <label for="defeito">Defeito:</label>
+                  <select class="selectpicker form-control" data-live-search="true" data-size="5" name="cd_validador">
+                      {% for validador in validadores %}
+                          <option>{{validador["num_serie"]}}</option>
+                      {% endfor %}
+                  </select>
+
+                  <label for="defeito" style="margin-top: 10px;">Defeito:</label>
                   <div class = "row">
                   {% for defeito in defeitos %}
-                    {% autoescape false %}
                     <div class="col-lg-6">
                       <div class="input-group">
                         <span class="input-group-addon">
-                          <input type="radio" name="defeito" id="defeito" value="{{defeito["tipo_defeito"]}}">{{defeito["tipo_defeito"]}}
+                          <input type="radio" name="defeito" id="defeito" value="{{defeito["tipo_defeito"]}}">{{defeito["tipo_defeito"].encode('latin1')}}
                         </span>
                       </div><!-- /input-group -->
                     </div><!-- /.col-lg-6 -->
-                    {% endautoescape %}
                   {%endfor%}
                   </div>
                   <br>

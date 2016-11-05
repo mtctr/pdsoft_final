@@ -1,4 +1,6 @@
- drop database if exists trampolim;
+
+set foreign_key_checks=0;
+drop database if exists trampolim;
 
  create database trampolim
      DEFAULT CHARACTER SET utf8;             -- creates working database
@@ -28,8 +30,7 @@
      id_validador varchar(255) not null,
      PRIMARY KEY (id_onibus),
      FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)
-     ON UPDATE CASCADE
-     ON DELETE CASCADE
+     ON UPDATE CASCADE ON DELETE CASCADE
  );
 
  create table gre(
@@ -59,6 +60,8 @@
      FOREIGN KEY (tipo_defeito) REFERENCES defeito(tipo_defeito)
  );
 
+set foreign_key_checks=1;
+
 show tables;
 describe admin;
 describe validadores;
@@ -66,3 +69,6 @@ describe onibus;
 describe gre;
 describe defeito;
 describe lista_defeitos;
+
+-- running file to populate database with data
+SOURCE /home/application/populate-data.sql

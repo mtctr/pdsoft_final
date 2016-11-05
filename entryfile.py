@@ -9,6 +9,9 @@ import sys
 import os
 import cgi
 
+reload(sys)  # Reload is a hack
+sys.setdefaultencoding('UTF8')
+
 app = Flask(__name__)
 
 app.config.update(
@@ -39,20 +42,37 @@ def hello():
 
 @app.route("/cadastroGRE", methods=["GET", "POST"])
 def cadastroGRE():
+    print(sys.getdefaultencoding())
+    print(sys.getfilesystemencoding())
 
     cur = mysql.connection.cursor()
     cadastroGRE = 0
-    cur.execute("SELECT * FROM defeito")
-    row = cur.fetchall()
 
+    cur.execute("SELECT tipo_defeito FROM defeito")
+    row = cur.fetchall()
     defeitos = []
     for r in row:
         defeitos.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
 
+    cur.execute("SELECT id_onibus FROM onibus")
+    row = cur.fetchall()
+    onibus = []
+    for r in row:
+        onibus.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+    cur.execute("SELECT num_serie FROM validadores")
+    row = cur.fetchall()
+    validadores = []
+    for r in row:
+        validadores.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
     if request.method =="POST":
         data_envio = request.form["cd_date"]
         id_onibus = request.form["cd_onibus"]
+        pick = request.form["cd_onibus"]
         remessa = request.form["cd_remessa"]
         id_validador = request.form["cd_validador"]
         tipo_defeito = request.form["defeito"]
@@ -61,7 +81,6 @@ def cadastroGRE():
             cur.execute("SELECT id_gre FROM gre WHERE remessa = '{}';".format(remessa))
             tup = cur.fetchone()
             id_gre = tup[0]
-            print tipo_defeito
             cur.execute("INSERT INTO lista_defeitos(id_gre, tipo_defeito) VALUES ('{}', '{}');".format(id_gre, tipo_defeito))
             mysql.connection.commit()
             cadastroGRE = 1
@@ -71,7 +90,7 @@ def cadastroGRE():
             cur.close()
 
 
-    return render_template("cadastroGRE.html", defeitos = defeitos, cadastro = cadastroGRE)
+    return render_template("cadastroGRE.html", defeitos = defeitos, onibus = onibus , validadores = validadores , cadastro = cadastroGRE)
 
 @app.route("/cadastroOnibus", methods=["GET", "POST"])
 def cadastroOnibus():
@@ -100,7 +119,6 @@ def cadastroDefeito():
 
     if request.method =="POST":
         tipo_defeito = request.form["cd_defeito"].encode('utf-8')
-        print tipo_defeito
         try:
             cur.execute("INSERT INTO defeito(tipo_defeito) VALUES ('{}');".format(tipo_defeito))
             mysql.connection.commit()
@@ -155,7 +173,6 @@ def dbBus():
         onibus.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
 
-    print onibus
     return render_template("busview.html", onibus=onibus)
 
 @app.route('/valview')
@@ -169,7 +186,6 @@ def dbValidador():
         validadores.append(
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
 
-    print validadores
     return render_template("valview.html", validadores=validadores)
 
 @app.route('/greview')

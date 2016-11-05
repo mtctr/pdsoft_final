@@ -38,7 +38,7 @@
             {% autoescape false %}
             </tr>
             <td>{{defeito["id_gre"]}}</td>
-            <td>{{defeito["tipo_defeito"]}}</td>
+            <td>{{defeito["tipo_defeito"].encode('latin1')}}</td>
             <td>{{defeito["relatorio"]}}</td>
             </tr>
             {% endautoescape %}
