@@ -8,3 +8,5 @@ insert into validadores(num_serie)
 
 insert into validadores(num_serie)
             values("a1b2c5");
+insert into defeito values("Placa defeituosa");
+insert into defeito values("Problema no visor");
