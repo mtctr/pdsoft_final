@@ -41,7 +41,7 @@ def hello():
 def cadastroGRE():
 
     cur = mysql.connection.cursor()
-    cadastro = 0
+    cadastroGRE = 0
     cur.execute("SELECT * FROM defeito")
     row = cur.fetchall()
 
@@ -64,19 +64,19 @@ def cadastroGRE():
             print tipo_defeito
             cur.execute("INSERT INTO lista_defeitos(id_gre, tipo_defeito) VALUES ('{}', '{}');".format(id_gre, tipo_defeito))
             mysql.connection.commit()
-            cadastro = 1
+            cadastroGRE = 1
         except mysql.connection.IntegrityError:
-            cadastro = 3
+            cadastroGRE = 3
         finally:
             cur.close()
 
 
-    return render_template("cadastroGRE.html", defeitos = defeitos, cadastro = cadastro)
+    return render_template("cadastroGRE.html", defeitos = defeitos, cadastro = cadastroGRE)
 
 @app.route("/cadastroOnibus", methods=["GET", "POST"])
 def cadastroOnibus():
     cur = mysql.connection.cursor()
-    cadastro = 0
+    cadastroOnibus = 0
 
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
@@ -85,18 +85,38 @@ def cadastroOnibus():
             cur.execute("INSERT INTO onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
             cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus,id_validador))
             mysql.connection.commit()
-            cadastro = 1
+            cadastroOnibus = 1
         except mysql.connection.IntegrityError:
-            cadastro = 3
+            cadastroOnibus = 3
         finally:
             cur.close()
 
-    return render_template("cadastroOnibus.html", cadastro=cadastro)
+    return render_template("cadastroOnibus.html", cadastro=cadastroOnibus)
+
+@app.route("/cadastroDefeito", methods=["GET", "POST"])
+def cadastroDefeito():
+    cur = mysql.connection.cursor()
+    cadastroDefeito = 0
+
+    if request.method =="POST":
+        tipo_defeito = request.form["cd_defeito"].encode('utf-8')
+        print tipo_defeito
+        try:
+            cur.execute("INSERT INTO defeito(tipo_defeito) VALUES ('{}');".format(tipo_defeito))
+            mysql.connection.commit()
+            cadastroDefeito = 1
+        except mysql.connection.IntegrityError:
+            cadastroDefeito = 3
+        finally:
+            cur.close()
+
+    return render_template("cadastroDefeito.html", cadastro=cadastroDefeito)
 
 @app.route("/cadastroValidador", methods=["GET", "POST"])
 def cadastroValidador():
     cur = mysql.connection.cursor()
-    cadastro = 0
+    cadastroValidador = 0
+
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
@@ -116,13 +136,13 @@ def cadastroValidador():
                 cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
 
             mysql.connection.commit()
-            cadastro = 1
+            cadastroValidador = 1
         except mysql.connection.IntegrityError:
-            cadastro = 3
+            cadastroValidador = 3
         finally:
             cur.close()
 
-    return render_template("cadastroValidador.html", cadastro = cadastro)
+    return render_template("cadastroValidador.html", cadastro = cadastroValidador)
 
 @app.route('/busview')
 def dbBus():

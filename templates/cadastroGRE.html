@@ -9,61 +9,34 @@
         {% if cadastro == 1 %}
         <div class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<<<<<<< HEAD
-            <strong>Parabéns!</strong> A GRE foi cadastrado com sucesso!
-=======
-            <strong>Parabéns!</strong> O componente foi cadastrado com sucesso!
->>>>>>> 59384f83b0f10eb5ee32b27c31271959271c1b33
+            <strong>Parabéns!</strong> A GRE foi cadastrada com sucesso!
         </div>
         {% elif cadastro == 2 %}
         <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<<<<<<< HEAD
-            <strong>Aviso!</strong> Ocorreu um erro no formato dos dados e  a GRE não foi cadastrado.
-=======
-            <strong>Aviso!</strong> Ocorreu um erro no formato dos dados e o componente não foi cadastrado.
->>>>>>> 59384f83b0f10eb5ee32b27c31271959271c1b33
+            <strong>Aviso!</strong> Ocorreu um erro no formato dos dados e  a GRE não foi cadastrada.
         </div>
         {% elif cadastro == 3 %}
         <div class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<<<<<<< HEAD
-            <strong>Aviso!</strong> Ocorreu um erro no banco de dados e a GRE não foi cadastrado.
-=======
-            <strong>Aviso!</strong> Ocorreu um erro no banco de dados e o componente não foi cadastrado.
->>>>>>> 59384f83b0f10eb5ee32b27c31271959271c1b33
+            <strong>Aviso!</strong> Ocorreu um erro no banco de dados e a GRE não foi cadastrada.
         </div>
         {% endif%}
 
         <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="user_form">
             <div class="row">
-<<<<<<< HEAD
                 <div class="col-lg-12">
-                    <label>Cadastro de GRE:</label><br><br>
-
-                    <label for="cd_date">Data de envio</label>
-                    <input type="date" class="form-control" style="margin-bottom:10px;" name="cd_date" id="cd_date">
-                    <label for="cd_onibus">Ônibus</label>
-                    <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_onibus" id="cd_onibus" placeholder="ônibus">
-                    <label for="cd_remessa">Remessa</label>
-                    <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_remessa" id="cd_remessa" placeholder="número de remessa">
-                    <label for="cd_validador">Serial do Validador</label>
-                    <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_validador" id="cd_validador" placeholder="validador">
-
-                    <br>
-=======
-                <div class="col-lg-7">
-                  <label>Cadastro de GRE:</label><br>
+                  <label>Cadastro de GRE:</label><br><br>
                   <label for="cd_date">Data de envio</label>
-                  <input type="date" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_date" id="cd_date" placeholder="AAAA/MM/DD">
+                  <input type="date" class="form-control" style="margin-bottom:10px;" name="cd_date" id="cd_date" placeholder="AAAA/MM/DD">
                   <label for="cd_onibus">Ônibus</label>
-                  <input type="text" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_onibus" id="cd_onibus" placeholder="012345">
+                  <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_onibus" id="cd_onibus" placeholder="012345">
                   <label for="cd_remessa">Remessa</label>
-                  <input type="text" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_remessa" id="cd_remessa" placeholder="0000">
+                  <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_remessa" id="cd_remessa" placeholder="0000">
                   <label for="cd_validador">Serial do Validador</label>
-                  <input type="text" class="form-control" style="margin-top:10px; margin-bottom:10px;" name="cd_validador" id="cd_validador" placeholder="a1b2c3">
+                  <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_validador" id="cd_validador" placeholder="a1b2c3">
                   <label for="defeito">Defeito:</label>
-                  <div class = "row">                
+                  <div class = "row">
                   {% for defeito in defeitos %}
                     {% autoescape false %}
                     <div class="col-lg-6">
@@ -76,7 +49,7 @@
                     {% endautoescape %}
                   {%endfor%}
                   </div>
->>>>>>> 59384f83b0f10eb5ee32b27c31271959271c1b33
+                  <br>
                     <a href="/"><button type="button" class="btn btn-default btn-md">Voltar</button></a>
                     <button type="submit" class="btn btn-primary btn-md" id="btn_save" onclick="verifyDataFields()">Salvar</button>
                 </div>

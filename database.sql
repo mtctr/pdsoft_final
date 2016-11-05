@@ -24,7 +24,7 @@
  );
 
  create table onibus(
-     id_onibus int not null ,
+     id_onibus int not null,
      id_validador varchar(255) not null,
      PRIMARY KEY (id_onibus),
      FOREIGN KEY (id_validador) REFERENCES validadores(num_serie)

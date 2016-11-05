@@ -1,0 +1,41 @@
+{% extends "default.html" %}
+
+{% block title %}
+    Cadastro de GRE
+{% endblock %}
+
+{% block content %}
+
+    {% if cadastro == 1 %}
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Parabéns!</strong> O defeito foi cadastrada com sucesso!
+    </div>
+
+    {% elif cadastro == 2 %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Aviso!</strong> Ocorreu um erro no formato dos dados e o defeito não foi cadastrada.
+    </div>
+    
+    {% elif cadastro == 3 %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Aviso!</strong> Ocorreu um erro no banco de dados e o defeito não foi cadastrada.
+    </div>
+    {% endif%}
+
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="user_form">
+        <div class="row">
+            <div class="col-lg-12">
+                <label>Cadastro de Defeito:</label><br><br>
+                <label for="cd_onibus">Tipo do Defeito</label>
+                <input type="text" class="form-control" style="margin-bottom:10px;" name="cd_defeito" id="cd_defeito" placeholder="Tipo">
+                <br>
+                <a href="/"><button type="button" class="btn btn-default btn-md">Voltar</button></a>
+                <button type="submit" class="btn btn-primary btn-md" id="btn_save" onclick="verifyDataFields()">Salvar</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
