@@ -14,6 +14,7 @@
       <tr>
         <th>ID</th>
         <th>Data de envio</th>
+        <th>Data de retorno</th>
         <th>ID Ônibus</th>
         <th>Remessa</th>
         <th>ID Validador</th>
@@ -22,6 +23,7 @@
           </tr>
           <td>{{gre["id_gre"]}}</td>
           <td>{{gre["data_envio"]}}</td>
+          <td>{{gre["data_retorno"]}}</td>
           <td>{{gre["id_onibus"]}}</td>
           <td>{{gre["remessa"]}}</td>
           <td>{{gre["id_validador"]}}</td>
@@ -33,17 +35,16 @@
         <tr>
           <th>ID GRE </th>
           <th>Tipo de Defeito</th>
-          <th>Relatório</th>
+          <th>Observações</th>
           {% for defeito in defeitos %}
             {% autoescape false %}
             </tr>
             <td>{{defeito["id_gre"]}}</td>
             <td>{{defeito["tipo_defeito"].encode('latin1')}}</td>
-            <td>{{defeito["relatorio"]}}</td>
+            <td>{{defeito["observacoes"]}}</td>
             </tr>
             {% endautoescape %}
           {%endfor%}
-
       </table>
     </div>
 

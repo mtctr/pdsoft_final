@@ -70,18 +70,20 @@ def cadastroGRE():
             dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
 
     if request.method =="POST":
-        data_envio = request.form["cd_date"]
+        data_envio = request.form["cd_date_envio"]
+        data_retorno = request.form["cd_date_retorno"]
         id_onibus = request.form["cd_onibus"]
         pick = request.form["cd_onibus"]
         remessa = request.form["cd_remessa"]
         id_validador = request.form["cd_validador"]
         tipo_defeito = request.form["defeito"]
+        observacoes = request.form["observacoes"]
         try:
-            cur.execute("INSERT INTO gre (data_envio, id_onibus, remessa, id_validador) VALUES ('{}', '{}', '{}', '{}');".format(data_envio, id_onibus, remessa, id_validador))
-            cur.execute("SELECT id_gre FROM gre WHERE remessa = '{}';".format(remessa))
+            cur.execute("INSERT INTO gre (data_envio, data_retorno, id_onibus, remessa, id_validador) VALUES ('{}','{}', '{}', '{}', '{}');".format(data_envio, data_retorno, id_onibus, remessa, id_validador))
+            cur.execute("SELECT Max(id_gre) FROM gre;")
             tup = cur.fetchone()
             id_gre = tup[0]
-            cur.execute("INSERT INTO lista_defeitos(id_gre, tipo_defeito) VALUES ('{}', '{}');".format(id_gre, tipo_defeito))
+            cur.execute("INSERT INTO lista_defeitos(id_gre, tipo_defeito, observacoes) VALUES ('{}', '{}', '{}');".format(id_gre, tipo_defeito, observacoes))
             mysql.connection.commit()
             cadastroGRE = 1
         except mysql.connection.IntegrityError:

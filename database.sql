@@ -36,6 +36,7 @@ drop database if exists trampolim;
  create table gre(
      id_gre int not null auto_increment,
      data_envio date not null,
+     data_retorno date not null,
      id_onibus int not null,
      remessa int not null,
      id_validador varchar(255) not null,
@@ -54,7 +55,7 @@ drop database if exists trampolim;
  create table lista_defeitos(
      id_gre int not null,
      tipo_defeito varchar(255) not null,
-     relatorio varchar(255),
+     observacoes varchar(255),
      CONSTRAINT pk_listaID PRIMARY KEY (id_gre,tipo_defeito),
      FOREIGN KEY (id_gre) REFERENCES gre(id_gre),
      FOREIGN KEY (tipo_defeito) REFERENCES defeito(tipo_defeito)
