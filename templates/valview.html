@@ -13,12 +13,10 @@
       <table class="table">
         <tr>
           <th>ID Validador</th>
-          <th>ID Ônibus</th>
           {% for validador in validadores %}
             {% autoescape false %}
             </tr>
             <td>{{validador["num_serie"]}}</td>
-            <td>{{validador["id_onibus"]}}</td>
             </tr>
             {% endautoescape %}
           {%endfor%}

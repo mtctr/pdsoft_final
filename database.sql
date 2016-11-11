@@ -18,12 +18,8 @@ drop database if exists trampolim;
 
  create table validadores(
      num_serie varchar(255) not null,
-     id_onibus int,
-     PRIMARY KEY (num_serie),
-     FOREIGN KEY (id_onibus) REFERENCES onibus(id_onibus)
-     ON UPDATE CASCADE
-     ON DELETE CASCADE
- );
+     PRIMARY KEY (num_serie)
+     );
 
  create table onibus(
      id_onibus int not null,

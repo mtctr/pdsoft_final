@@ -99,12 +99,18 @@ def cadastroOnibus():
     cur = mysql.connection.cursor()
     cadastroOnibus = 0
 
+    cur.execute("SELECT num_serie FROM validadores")
+    row = cur.fetchall()
+    validadores = []
+    for r in row:
+        validadores.append(
+            dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
     if request.method =="POST":
         id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
         try:
             cur.execute("INSERT INTO onibus(id_onibus,id_validador) VALUES ('{}','{}');".format(id_onibus,id_validador))
-            cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus,id_validador))
             mysql.connection.commit()
             cadastroOnibus = 1
         except mysql.connection.IntegrityError:
@@ -112,7 +118,7 @@ def cadastroOnibus():
         finally:
             cur.close()
 
-    return render_template("cadastroOnibus.html", cadastro=cadastroOnibus)
+    return render_template("cadastroOnibus.html",validadores=validadores, cadastro=cadastroOnibus)
 
 @app.route("/cadastroDefeito", methods=["GET", "POST"])
 def cadastroDefeito():
@@ -138,23 +144,9 @@ def cadastroValidador():
     cadastroValidador = 0
 
     if request.method =="POST":
-        id_onibus = request.form["cd_onibus"]
         id_validador = request.form["cd_validador"]
         try:
-            if id_onibus != "":
-                cur.execute("SELECT id_onibus FROM onibus WHERE id_onibus = '{}';".format(id_onibus))
-                tup = cur.fetchone()
-                #verifica se o onibus já está cadastrado, caso não estiver, será cadastrado
-                if not tup:
-                    cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
-                    cur.execute("INSERT INTO onibus VALUES ('{}','{}')".format(id_onibus, id_validador))
-                    cur.execute("UPDATE validadores SET id_onibus = '{}' WHERE num_serie = '{}';".format(id_onibus, id_validador))
-                else:
-                    cur.execute("INSERT INTO validadores(num_serie,id_onibus) VALUES ('{}','{}');".format(id_validador, id_onibus))
-                    cur.execute("UPDATE onibus SET id_validador = '{}' WHERE id_onibus = '{}';".format(id_validador,id_onibus))
-            else:
-                cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
-
+            cur.execute("INSERT INTO validadores(num_serie) VALUES ('{}');".format(id_validador))
             mysql.connection.commit()
             cadastroValidador = 1
         except mysql.connection.IntegrityError:
