@@ -82,7 +82,7 @@ def cadastroGRE():
         tipo_defeito = request.form["defeito"]
         observacoes = request.form["observacoes"]
         try:
-            cur.execute("INSERT INTO gre (data_envio, data_retorno, id_onibus, remessa, id_validador) VALUES ('{}','{}', '{}', '{}', '{}');".format(data_envio, data_retorno, id_onibus, remessa, id_validador))
+            cur.execute("INSERT INTO gre(data_envio, data_retorno, id_onibus, remessa, id_validador) VALUES('{}','{}','{}','{}','{}');".format(data_envio, data_retorno, id_onibus, remessa, id_validador))
             cur.execute("SELECT Max(id_gre) FROM gre;")
             tup = cur.fetchone()
             id_gre = tup[0]
@@ -268,13 +268,15 @@ def viewGraph(type):
         graph_data = graph.render_data_uri()
 
     elif type == 1:
+        cur.execute("SELECT tipo_defeito, COUNT(*) FROM lista_defeitos GROUP BY tipo_defeito;")
+        tup = cur.fetchall()
         graph = pygal.Bar()
-        graph.title = 'Browser usage evolution (in %)'
-        graph.x_labels = map(str, range(2002, 2013))
-        graph.add('Firefox', [None, None, 0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])
-        graph.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
-        graph.add('IE',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])
-        graph.add('Others',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])
+        graph.title = 'Número de ocorrências'
+
+        for t in tup:
+            print t
+            graph.add(t[0], t[1])
+
         graph_data = graph.render_data_uri()
     else:
         pass

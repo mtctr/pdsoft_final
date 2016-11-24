@@ -1,5 +1,4 @@
-
-set foreign_key_checks=0;
+set foreign_key_checks=1;
 drop database if exists trampolim;
 
  create database trampolim
