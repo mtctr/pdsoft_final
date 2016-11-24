@@ -286,15 +286,18 @@ def viewGraph2():
 
         cur.execute("SELECT data_envio, COUNT(*) from gre where data_envio >= '{}' and data_envio <= '{}' GROUP BY data_envio;".format(data_inicio,data_final))
         tup = cur.fetchall()
-        graph = pygal.Line()
+        graph = pygal.Line(show_minor_x_labels=False)
         graph.title = 'Quantidade de Máquinas Defeituosas entre duas datas'
 
         lis = []
+        x_lis = []
         for t in tup:
             lis.append(t[1])
+            x_lis.append(t[0])
 
-        print lis
-        graph.add("Equipamentos defeituosos", lis)
+        graph.x_labels = x_lis
+        graph.x_labels_major = [min(x_lis),max(x_lis)]
+        graph.add("Equipamentos defeituosos", lis, fill=True)
         graph_data = graph.render_data_uri()
         return render_template("graph2.html", graph_data = graph_data)
 
