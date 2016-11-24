@@ -1,0 +1,11 @@
+{% extends "default.html" %}
+
+{% block title %}
+    Gráficos
+{% endblock %}
+
+{% block content %}
+
+    <embed type="image/svg+xml" src={{graph_data|safe}} style='max-width:1000px'/>
+
+{% endblock %}

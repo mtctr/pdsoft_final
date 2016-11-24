@@ -1,0 +1,25 @@
+{% extends "default.html" %}
+
+{% block title %}
+    Gráficos
+{% endblock %}
+
+{% block content %}
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data" id="user_form">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-inline">
+                    <label for="cd_date_begin">Inicio:</label>
+                    <input type="date" class="form-control" name="cd_date_begin" id="cd_date_begin" placeholder="AAAA/MM/DD">
+                    <label for="cd_date_end" style="margin-left:5px;">Final:</label>
+                    <input type="date" class="form-control" name="cd_date_end" id="cd_date_end" placeholder="AAAA/MM/DD">
+                    <button type="submit" class="btn btn-primary btn-md" id="btn_save">Gerar gráfico</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    </br></br></br>
+    <embed type="image/svg+xml" src={{graph_data|safe}} style='max-width:1000px'/>
+
+{% endblock %}

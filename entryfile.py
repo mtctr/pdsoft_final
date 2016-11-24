@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_mysqldb import MySQL
 from datetime import date
 from users import User
+from datetime import datetime, timedelta
 
 import pygal
 import sys
@@ -255,33 +256,51 @@ def consultaGRE():
     return render_template("consulta.html")
 
 
-@app.route('/graph/<int:type>', methods=["GET", "POST"])
-def viewGraph(type):
+@app.route('/graph/1', methods=["GET", "POST"])
+def viewGraph1():
     cur = mysql.connection.cursor()
+
+    cur.execute("SELECT tipo_defeito, COUNT(*) FROM lista_defeitos GROUP BY tipo_defeito;")
+    tup = cur.fetchall()
     graph = pygal.Bar()
+    graph.title = 'Número de ocorrências'
+
+    for t in tup:
+        print t
+        graph.add(t[0], t[1])
+
     graph_data = graph.render_data_uri()
 
-    if type == 0:
-        #cur.execute("SELECT * FROM gre WHERE data_envio = '{}';".format(data_envio))
-        #tup1 = cur.fetchall()
-        graph = pygal.Bar()
-        graph_data = graph.render_data_uri()
+    return render_template("graph1.html", graph_data = graph_data )
 
-    elif type == 1:
-        cur.execute("SELECT tipo_defeito, COUNT(*) FROM lista_defeitos GROUP BY tipo_defeito;")
+@app.route('/graph/2', methods=["GET", "POST"])
+def viewGraph2():
+    cur = mysql.connection.cursor()
+
+    if request.method =="POST":
+        data_inicio = request.form["cd_date_begin"]
+        data_final = request.form["cd_date_end"]
+
+        print data_inicio
+        print data_final
+
+        cur.execute("SELECT data_envio, COUNT(*) from gre where data_envio >= '{}' and data_envio <= '{}' GROUP BY data_envio;".format(data_inicio,data_final))
         tup = cur.fetchall()
-        graph = pygal.Bar()
-        graph.title = 'Número de ocorrências'
+        graph = pygal.Line()
+        graph.title = 'Quantidade de Máquinas Defeituosas entre duas datas'
 
+        lis = []
         for t in tup:
-            print t
-            graph.add(t[0], t[1])
+            lis.append(t[1])
 
+        print lis
+        graph.add("Equipamentos defeituosos", lis)
         graph_data = graph.render_data_uri()
-    else:
-        pass
+        return render_template("graph2.html", graph_data = graph_data)
 
-    return render_template("graph.html", graph_data = graph_data )
+    graph = pygal.Line()
+    graph_data = graph.render_data_uri()
+    return render_template("graph2.html", graph_data = graph_data)
 
 #DEBUG:
 @app.route('/busview')

@@ -40,7 +40,16 @@
                             </ul>
                         </li>
                         <li role="presentation"><a href="/consulta">Consultas <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
-                        <li role="presentation"><a href="/graph/0">Gráficos</a></li>
+                        <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                    Gráficos <span class="caret"></span>
+                                </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/graph/1">Número de Ocorrências</a></li>
+                                <li><a href="/graph/2">Quantidade de Máquinas Defeituosas</a></li>
+                                <li><a href="/graph/3">Something else here</a></li>
+                            </ul>
+                        </li>
                         <!--Dropdown-->
                           <li class="dropdown">
                                   <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
@@ -55,7 +64,16 @@
                       <li role="presentation"><a href="/logout">Log Out</a></li>
                     {%else%}
                     <li role="presentation"><a href="/consulta">Consultas <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
-                    <!--Dropdown-->
+                    <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                Gráficos <span class="caret"></span>
+                            </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/graph/1">Número de Ocorrências</a></li>
+                            <li><a href="/graph/2">Quantidade de Máquinas Defeituosas</a></li>
+                            <li><a href="/graph/3">Something else here</a></li>
+                        </ul>
+                    </li><!--Dropdown-->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                                 Debug <span class="caret"></span>
