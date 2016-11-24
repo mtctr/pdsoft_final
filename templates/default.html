@@ -33,29 +33,31 @@
                                 Cadastro <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                              <li><a href="/cadastroGRE">GRE</a></li>
-                              <li><a href="/cadastroOnibus">Ônibus</a></li>
-                              <li><a href="/cadastroValidador">Validadores</a></li>
                               <li><a href="/cadastroDefeito">Defeito</a></li>
+                              <li><a href="/cadastroValidador">Validadores</a></li>
+                              <li><a href="/cadastroOnibus">Ônibus</a></li>
+                              <li><a href="/cadastroGRE">GRE</a></li>
                             </ul>
                         </li>
-                      <!--Dropdown-->
-                        <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-                                    Consultas <span class="caret"></span>
-                                </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                              <li><a href="/greview">GRE</a></li>
-                              <li><a href="/busview">Ônibus</a></li>
-                              <li><a href="/valview">Validadores</a></li>
-                            </ul>
-                        </li>
+                        <li role="presentation"><a href="/consulta">Consultas <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+                        <!--Dropdown-->
+                          <li class="dropdown">
+                                  <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                      Debug <span class="caret"></span>
+                                  </a>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/valview">Validadores</a></li>
+                                <li><a href="/busview">Ônibus</a></li>
+                                <li><a href="/greview">GRE</a></li>
+                              </ul>
+                          </li>
                       <li role="presentation"><a href="/logout">Log Out</a></li>
                     {%else%}
+                    <li role="presentation"><a href="/consulta">Consultas<span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
                     <!--Dropdown-->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" id="drop4" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-                                Consultas <span class="caret"></span>
+                                Debug <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                               <li><a href="/greview">GRE</a></li>

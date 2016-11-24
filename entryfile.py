@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_mysqldb import MySQL
 from datetime import date
 from users import User
+from matplotlib import pyplot
 
 import sys
 import os
@@ -39,6 +40,8 @@ def hello():
         return render_template("home.html")
     else:
         return render_template("home.html")
+
+#CADASTROS:
 
 @app.route("/cadastroGRE", methods=["GET", "POST"])
 def cadastroGRE():
@@ -156,6 +159,102 @@ def cadastroValidador():
 
     return render_template("cadastroValidador.html", cadastro = cadastroValidador)
 
+#CONSULTAS:
+
+@app.route('/consulta')
+def goToConsulta():
+    return render_template("consulta.html")
+
+@app.route('/consultaValidador', methods=["GET", "POST"])
+def consultaValidador():
+    cur = mysql.connection.cursor()
+    consulta = 0
+
+    if request.method =="POST":
+        id_validador = request.form["cons"]
+
+        cur.execute("SELECT * FROM validadores WHERE num_serie = '{}';".format(id_validador))
+        tup1 = cur.fetchall()
+        validador = []
+        for r in tup1:
+            validador.append(
+                dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+        if not tup1:
+            return render_template("consulta.html", consulta = 1)
+        else:
+            cur.execute("SELECT * FROM onibus WHERE id_validador = '{}'".format(id_validador))
+            tup2 = cur.fetchall()
+            onibus = []
+            for r in tup2:
+                onibus.append(
+                    dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+
+            cur.execute("SELECT * FROM gre WHERE id_validador = '{}'".format(id_validador))
+            tup3 = cur.fetchall()
+            gre = []
+            for r in tup3:
+                gre.append(
+                    dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+            return render_template ("consulta.html", consulta = 2, validador = validador, onibus = onibus, gre = gre)
+
+    return render_template("consulta.html")
+
+@app.route('/consultaOnibus', methods=["GET", "POST"])
+def consultaOnibus():
+    cur = mysql.connection.cursor()
+    consulta = 0
+
+    if request.method =="POST":
+        id_onibus = request.form["cons"]
+
+        cur.execute("SELECT * FROM onibus WHERE id_onibus = '{}';".format(id_onibus))
+        tup1 = cur.fetchall()
+        onibus = []
+        for r in tup1:
+            onibus.append(
+                dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+        if not tup1:
+            return render_template("consulta.html", consulta = 1)
+        else:
+            cur.execute("SELECT * FROM gre WHERE id_onibus = '{}'".format(id_onibus))
+            tup2 = cur.fetchall()
+            gre = []
+            for r in tup2:
+                gre.append(
+                    dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+            return render_template ("consulta.html", consulta = 2, onibus = onibus, gre = gre)
+
+    return render_template("consulta.html")
+
+@app.route('/consultaGRE', methods=["GET", "POST"])
+def consultaGRE():
+    cur = mysql.connection.cursor()
+    consulta = 0
+
+    if request.method =="POST":
+        data_envio = request.form["cons"]
+
+        cur.execute("SELECT * FROM gre WHERE data_envio = '{}';".format(data_envio))
+        tup1 = cur.fetchall()
+
+        if not tup1:
+            return render_template("consulta.html", consulta = 1)
+        else:
+            gre = []
+            for r in tup1:
+                gre.append(
+                    dict((cur.description[idx][0], value) for idx, value in enumerate(r)))
+
+            return render_template ("consulta.html", consulta = 2, gre = gre)
+
+    return render_template("consulta.html")
+
+#DEBUG:
 @app.route('/busview')
 def dbBus():
     cur = mysql.connection.cursor()
